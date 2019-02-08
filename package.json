@@ -7,8 +7,7 @@
     "test": "jest --config jestconfig.json",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json",
-    "publish": "publish-to-git"
+    "lint": "tslint -p tsconfig.json"
   },
   "author": "",
   "license": "UNLICENSED",
