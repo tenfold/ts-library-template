@@ -4,7 +4,7 @@ pipeline:
     environment:
       - JOBS=8
     commands:
-      - npm install -q
+      - npm ci
   build:
     image: node:8
     commands:
