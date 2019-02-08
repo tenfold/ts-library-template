@@ -14,8 +14,8 @@ When maintaining your library you can keep pulling this repo for new interesting
 ## To publish your library
 
 1. Update version in `package.json`
-2. Commit
-3. Push tag
+2. Commit and push - and wait for build to pass
+3. Run `npm run publish` - this will push a tag in format `vX.Y.Z` with a version from `package.json`.
 
 ## To use a library published with this
 
