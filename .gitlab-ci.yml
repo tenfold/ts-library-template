@@ -1,0 +1,74 @@
+stages:
+  - install
+  - build
+  - test
+  - coverage
+  - deploy
+
+image: node:8
+
+install-job:
+  stage: install
+  script:
+    - npm ci
+  artifacts:
+    paths: 
+      - node_modules
+  tags:
+    - Tenfold
+  variables:
+    JOBS: 8
+  only:
+    - branches
+    - merge_requests
+    - tags
+
+build-job:
+  stage: build
+  script:
+    - npm build
+  tags:
+    - Tenfold
+  only:
+    - branches
+    - merge_requests
+    - tags
+
+test-job:
+  stage: test
+  script:
+    - npm test -- --coverage
+  tags:
+    - Tenfold
+  variables:
+    codecov_token: $codecov_token
+  only:
+    - branches
+    - merge_requests
+    - tags
+
+upload-coverage-job:
+  stage: coverage
+  script:
+    - "bash -c 'bash <(curl -s https://codecov.io/bash)'"
+  variables:
+    codecov_token: $codecov_token
+  tags:
+    - Tenfold
+  only:
+    - branches
+    - merge_requests
+    - tags
+
+publish-to-git-job:
+  stage: deploy
+  script:
+    - git config --global user.email "admin@gitlab"
+    - git config --global user.name "GitLab CI"
+    - npx publish-to-git --remote https://oauth2:$GITLAB_ACCESS_TOKEN@gitlab.com/$CI_PROJECT_PATH.git --force
+  variables:
+    GITLAB_ACCESS_TOKEN: $GITLAB_ACCESS_TOKEN
+  tags:
+    - Tenfold
+  only:
+    - tags
